@@ -12,11 +12,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up StackHawk CLI
+    - name: Install StackHawk CLI
       run: |
-        curl -sL https://cli.stackhawk.com/install.sh | sh
+        mkdir -p $HOME/stackhawk
+        curl -sL https://cli.stackhawk.com/install.sh -o $HOME/stackhawk/install.sh
+        sh $HOME/stackhawk/install.sh
         echo "$HOME/.hawk" >> $GITHUB_PATH
-        echo "$HOME/.hawk" >> $HOME/.bashrc
+        echo "export PATH=\$PATH:$HOME/.hawk" >> $HOME/.bashrc
         source $HOME/.bashrc
         export PATH=$HOME/.hawk:$PATH
         echo "Hawk CLI installed in: $HOME/.hawk"
