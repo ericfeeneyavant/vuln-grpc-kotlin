@@ -18,20 +18,18 @@ jobs:
         echo "Checking DNS resolution for various hosts"
         nslookup google.com
         nslookup github.com
-        nslookup cli.stackhawk.com
+        nslookup cli.stackhawk.com || echo "DNS resolution for cli.stackhawk.com failed, retrying..."
+        for i in {1..5}; do
+          sleep 5
+          nslookup cli.stackhawk.com && break
+          echo "Retry $i: DNS resolution for cli.stackhawk.com failed, retrying..."
+        done
+        nslookup cli.stackhawk.com || { echo "Failed to resolve cli.stackhawk.com"; exit 1; }
         echo "Checking connectivity to cli.stackhawk.com"
-        curl -I https://cli.stackhawk.com/install.sh
-        if [ $? -ne 0 ]; then
-          echo "Failed to reach cli.stackhawk.com"
-          exit 1
-        fi
+        curl -I https://cli.stackhawk.com/install.sh || { echo "Failed to reach cli.stackhawk.com"; exit 1; }
         mkdir -p $HOME/stackhawk
         echo "Fetching the install script"
-        curl -sL https://cli.stackhawk.com/install.sh -o $HOME/stackhawk/install.sh
-        if [ $? -ne 0 ]; then
-          echo "Failed to download the install script"
-          exit 1
-        fi
+        curl -sL https://cli.stackhawk.com/install.sh -o $HOME/stackhawk/install.sh || { echo "Failed to download the install script"; exit 1; }
         ls -al $HOME/stackhawk
         cat $HOME/stackhawk/install.sh  # Display the install script for debugging
         echo "Running the install script"
