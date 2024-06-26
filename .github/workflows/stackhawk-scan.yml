@@ -16,7 +16,12 @@ jobs:
       run: |
         curl -sL https://cli.stackhawk.com/install.sh | sh
         echo "$HOME/.hawk" >> $GITHUB_PATH
+        echo "$HOME/.hawk" >> $HOME/.bashrc
+        source $HOME/.bashrc
         export PATH=$HOME/.hawk:$PATH
+        echo "Hawk CLI installed in: $HOME/.hawk"
+        echo "Current PATH: $PATH"
+        ls -al $HOME/.hawk
         hawk version  # Verify the installation
 
     - name: Start Application
