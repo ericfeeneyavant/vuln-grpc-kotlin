@@ -17,14 +17,20 @@ jobs:
         mkdir -p $HOME/stackhawk
         curl -sL https://cli.stackhawk.com/install.sh -o $HOME/stackhawk/install.sh
         sh $HOME/stackhawk/install.sh
-        echo "$HOME/.hawk" >> $GITHUB_PATH
-        echo "export PATH=\$PATH:$HOME/.hawk" >> $HOME/.bashrc
-        source $HOME/.bashrc
-        export PATH=$HOME/.hawk:$PATH
-        echo "Hawk CLI installed in: $HOME/.hawk"
-        echo "Current PATH: $PATH"
-        ls -al $HOME/.hawk
-        hawk version  # Verify the installation
+        ls -al $HOME/stackhawk
+        if [ -d "$HOME/.hawk" ]; then
+          echo "$HOME/.hawk" >> $GITHUB_PATH
+          echo "export PATH=\$PATH:$HOME/.hawk" >> $HOME/.bashrc
+          source $HOME/.bashrc
+          export PATH=$HOME/.hawk:$PATH
+          echo "Hawk CLI installed in: $HOME/.hawk"
+          echo "Current PATH: $PATH"
+          ls -al $HOME/.hawk
+          hawk version  # Verify the installation
+        else
+          echo "StackHawk CLI installation failed"
+          exit 1
+        fi
 
     - name: Start Application
       run: |
