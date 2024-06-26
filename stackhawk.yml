@@ -4,7 +4,7 @@ scan:
   host: "http://localhost:9001"
   spider: true
   active: true
-  auth:
-    type: "basic"
-    username: "${USERNAME}"
-    password: "${PASSWORD}"
+  # auth:
+  #  type: "basic"
+  #  username: "${USERNAME}"
+  #  password: "${PASSWORD}"
