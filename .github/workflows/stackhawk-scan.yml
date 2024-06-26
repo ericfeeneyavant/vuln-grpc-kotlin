@@ -19,16 +19,17 @@ jobs:
       run: |
         echo "Downloading StackHawk CLI"
         curl -sL https://cli.stackhawk.com/install.sh -o install.sh
+        echo "Contents of install.sh:"
         cat install.sh  # Display the install script for debugging
         echo "Running StackHawk CLI install script"
         sh install.sh
         echo "Verifying StackHawk CLI installation"
-        ls -al $HOME/.hawk
+        ls -al $HOME/.hawk || { echo "Directory $HOME/.hawk does not exist"; exit 1; }
         echo "PATH before update: $PATH"
         echo "$HOME/.hawk" >> $GITHUB_PATH
         export PATH=$HOME/.hawk:$PATH
         echo "PATH after update: $PATH"
-        hawk version  # Verify the installation
+        hawk version || { echo "hawk command not found"; exit 1; }
 
     - name: Start Application
       run: docker-compose up -d  # Ensure your application is running
