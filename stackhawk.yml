@@ -1,7 +1,7 @@
 app:
   name: "vuln-grpc-kotlin"
 scan:
-  host: "http://localhost:8080"
+  host: "http://localhost:9001"
   spider: true
   active: true
   auth:
