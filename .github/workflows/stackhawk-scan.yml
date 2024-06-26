@@ -15,8 +15,7 @@ jobs:
     - name: Set up StackHawk CLI
       run: |
         curl -sL https://cli.stackhawk.com/install.sh | sh
-        echo 'export PATH=$HOME/.hawk:$PATH' >> $GITHUB_ENV
-        source $GITHUB_ENV
+        echo "$HOME/.hawk" >> $GITHUB_PATH
 
     - name: Start Application
       run: |
@@ -29,4 +28,3 @@ jobs:
       run: hawk scan
       env:
         HAWK_API_KEY: ${{ secrets.HAWK_API_KEY }}
-
