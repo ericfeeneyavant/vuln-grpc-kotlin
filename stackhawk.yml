@@ -1,0 +1,10 @@
+app:
+  name: "vuln-grpc-kotlin"
+scan:
+  host: "http://localhost:8080"
+  spider: true
+  active: true
+  auth:
+    type: "basic"
+    username: "${USERNAME}"
+    password: "${PASSWORD}"
