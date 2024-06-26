@@ -12,16 +12,26 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up StackHawk CLI
+    - name: Install Dependencies
+      run: sudo apt-get update && sudo apt-get install -y curl unzip
+
+    - name: Download and Install StackHawk CLI
       run: |
-        curl -sL https://cli.stackhawk.com/install.sh | sh
+        echo "Downloading StackHawk CLI"
+        curl -sL https://cli.stackhawk.com/install.sh -o install.sh
+        cat install.sh  # Display the install script for debugging
+        echo "Running StackHawk CLI install script"
+        sh install.sh
+        echo "Verifying StackHawk CLI installation"
+        ls -al $HOME/.hawk
+        echo "PATH before update: $PATH"
         echo "$HOME/.hawk" >> $GITHUB_PATH
         export PATH=$HOME/.hawk:$PATH
+        echo "PATH after update: $PATH"
         hawk version  # Verify the installation
 
     - name: Start Application
-      run: |
-        docker-compose up -d  # Ensure your application is running
+      run: docker-compose up -d  # Ensure your application is running
 
     - name: Run StackHawk Scan
       run: hawk scan
