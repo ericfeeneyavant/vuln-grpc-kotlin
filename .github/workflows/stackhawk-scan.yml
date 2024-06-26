@@ -12,19 +12,25 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Check Network and Install StackHawk CLI
+    - name: Debug Network and Install StackHawk CLI
       run: |
         set -x
         mkdir -p $HOME/stackhawk
-        curl -sL https://cli.stackhawk.com/install.sh -o $HOME/stackhawk/install.sh
-        ls -al $HOME/stackhawk
-        cat $HOME/stackhawk/install.sh  # Display the install script for debugging
         echo "Checking connectivity to cli.stackhawk.com"
         curl -I https://cli.stackhawk.com/install.sh
         if [ $? -ne 0 ]; then
           echo "Failed to reach cli.stackhawk.com"
           exit 1
         fi
+        echo "Fetching the install script"
+        curl -sL https://cli.stackhawk.com/install.sh -o $HOME/stackhawk/install.sh
+        if [ $? -ne 0 ]; then
+          echo "Failed to download the install script"
+          exit 1
+        fi
+        ls -al $HOME/stackhawk
+        cat $HOME/stackhawk/install.sh  # Display the install script for debugging
+        echo "Running the install script"
         sh $HOME/stackhawk/install.sh || { echo "Install script failed"; exit 1; }
         ls -al $HOME/.hawk || echo "Directory $HOME/.hawk does not exist"
         if [ -d "$HOME/.hawk" ]; then
@@ -52,4 +58,3 @@ jobs:
       run: hawk scan
       env:
         HAWK_API_KEY: ${{ secrets.HAWK_API_KEY }}
-
