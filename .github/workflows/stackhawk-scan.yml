@@ -19,7 +19,7 @@ jobs:
         curl -sL https://cli.stackhawk.com/install.sh -o $HOME/stackhawk/install.sh
         ls -al $HOME/stackhawk
         cat $HOME/stackhawk/install.sh  # Display the install script for debugging
-        sh $HOME/stackhawk/install.sh
+        sh $HOME/stackhawk/install.sh || { echo "Install script failed"; exit 1; }
         ls -al $HOME/.hawk || echo "Directory $HOME/.hawk does not exist"
         if [ -d "$HOME/.hawk" ]; then
           echo "$HOME/.hawk" >> $GITHUB_PATH
