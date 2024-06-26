@@ -3,6 +3,7 @@ name: Scheduled StackHawk Scan
 on:
   schedule:
     - cron: "0 0 * * *"  # This runs the scan every day at midnight UTC
+  workflow_dispatch:  # This allows manual triggering
 
 jobs:
   scan:
